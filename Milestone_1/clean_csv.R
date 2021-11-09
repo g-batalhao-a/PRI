@@ -1,6 +1,6 @@
-library(readr)
-library(dplyr)
-library(lubridate)
+if (require("readr")) install.packages("readr")
+if (require("dplyr")) install.packages("dplyr")
+if (require("lubridate")) install.packages("lubridate")
 
 recipes <- read_csv("data/recipes.csv")
 reviews <- read_csv("data/reviews.csv")
@@ -30,6 +30,6 @@ users <- merge(author.recipes,author.reviews,by = "AuthorId",all =TRUE, sort = T
 users <- rename(users, "RecipeAuthor" = "AuthorName.x", "ReviewAuthor" = "AuthorName.y")
 
 #Save clean files
-write.csv(new.recipes,"data/recipes_n_auth.csv")
-write.csv(new.reviews,"data/reviews_n_auth.csv")
+write.csv(new.recipes,"data/clean_recipes.csv")
+write.csv(new.reviews,"data/clean_reviews.csv")
 write.csv(users,"data/users.csv")
