@@ -12,8 +12,8 @@ author.recipes <- select(recipes, c('AuthorId', 'AuthorName'))
 author.reviews <- select(reviews, c('AuthorId', 'AuthorName'))
 
 # Remove AuthorName and Images
-new.recipes <- select(recipes, -c('AuthorName','Images'))
-new.reviews <- select(reviews, -c('AuthorName'))
+new.recipes <- select(recipes, -c('AuthorName','Images', 'RecipeIngredientQuantities'))
+new.reviews <- select(reviews, -c('AuthorName','DateSubmitted'))
 
 #Clean duplicate data
 new.recipes <- distinct(new.recipes,.keep_all = TRUE)
@@ -27,8 +27,8 @@ new.recipes$PrepTime <- as.numeric(duration(new.recipes$PrepTime))
 new.recipes$TotalTime <- as.numeric(duration(new.recipes$TotalTime))
 
 # Remove Hour from dates
-str_split(new.recipes$DatePublished, " ")[1]
 new.recipes <- separate(new.recipes, DatePublished, "DatePublished", sep = " ", extra = "drop")
+new.reviews <- separate(new.reviews, DateModified, "DateModified", sep = " ", extra = "drop")
 
 #Create Links
 new.recipes <- new.recipes %>% mutate(URL = paste("https://www.food.com/recipe/",
@@ -36,8 +36,12 @@ new.recipes <- new.recipes %>% mutate(URL = paste("https://www.food.com/recipe/"
                                                   "-", RecipeId, sep = ""))
 
 #Build user table
-users <- merge(author.recipes,author.reviews,by = "AuthorId",all =TRUE, sort = TRUE)
-users <- rename(users, "RecipeAuthor" = "AuthorName.x", "ReviewAuthor" = "AuthorName.y")
+users <- merge(author.recipes,author.reviews,by = c("AuthorId","AuthorName"),all =TRUE, sort = TRUE)
+users <- rename(users, "Id" = "AuthorId", "Name" = "AuthorName")
+
+#Normalize column names
+new.recipes <- rename(new.recipes, "Id" = "RecipeId", "UserId" = "AuthorId")
+new.reviews <- rename(new.reviews, "Id" = "ReviewId", "UserId" = "AuthorId")
 
 #Save clean files
 write.csv(new.recipes,"data/clean_recipes.csv")
