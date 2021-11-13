@@ -26,6 +26,9 @@ new.recipes$CookTime <- as.numeric(duration(new.recipes$CookTime))
 new.recipes$PrepTime <- as.numeric(duration(new.recipes$PrepTime))
 new.recipes$TotalTime <- as.numeric(duration(new.recipes$TotalTime))
 
+#Replace NA in CookTime with 0
+new.recipes$CookTime[is.na(new.recipes$CookTime)] = 0
+
 # Remove Hour from dates
 new.recipes <- separate(new.recipes, DatePublished, "DatePublished", sep = " ", extra = "drop")
 new.reviews <- separate(new.reviews, DateModified, "DateModified", sep = " ", extra = "drop")
@@ -38,6 +41,13 @@ new.recipes <- new.recipes %>% mutate(URL = paste("https://www.food.com/recipe/"
 #Build user table
 users <- merge(author.recipes,author.reviews,by = c("AuthorId","AuthorName"),all =TRUE, sort = TRUE)
 users <- rename(users, "Id" = "AuthorId", "Name" = "AuthorName")
+
+#Remove Outliers
+data <- select_if(new.recipes,is.numeric) %>% select(-c('RecipeId','AuthorId','AggregatedRating','ReviewCount','RecipeServings'))
+z_scores <- as.data.frame(sapply(data, function(data) (abs(data-mean(data))/sd(data))))    
+new.recipes <- new.recipes[!rowSums(z_scores>3), ]
+summary(new.recipes)
+new.recipes <- filter(new.recipes, Calories > 0 & CookTime > 0)
 
 #Normalize column names
 new.recipes <- rename(new.recipes, "Id" = "RecipeId", "UserId" = "AuthorId")
