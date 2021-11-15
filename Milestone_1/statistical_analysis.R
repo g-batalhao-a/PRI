@@ -1,5 +1,6 @@
 if (!require("skimr")) install.packages("skimr")
 if (!require("lessR")) install.packages("lessR")
+if (!require("wordcloud2")) install.packages("wordcloud2")
 
 #Recipe Analysis
 barplot(sort(table(new.recipes$RecipeCategory),decreasing = T))
@@ -16,6 +17,16 @@ barplot(prop.table(table(graph.recipes$ReviewCount)), main = paste("Frequency of
 barplot(prop.table(table(new.reviews$Rating)), main = paste("Frequency of Ratings"), xlab = "Rating", col = "#00a2ff")
 hist(as.numeric(format(as.Date(new.reviews$DateModified, "%Y-%m-%d"),"%Y")), main = paste("Histogram of Reviews Per Year"),xlab = "Year",col = "#1dd900")
 
+# Word cloud Graph
+words <- new.recipes$RecipeCategory
+wordsFreq <- data.frame(table(words))
+wordcloud2(data = wordsFreq, 
+           color = "random-light", 
+           size = 1, 
+           minSize = 1.1,
+           shape = "square",
+           ellipticity = 0.25,
+           rotateRatio = 0)
 
 
 summary(new.recipes)
