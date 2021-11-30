@@ -54,7 +54,7 @@ users <- rename(users, "Id" = "UserId", "Name" = "AuthorName")
 new.recipes <- select(new.recipes, -c('AuthorName'))
 new.reviews <- select(new.reviews, -c('AuthorName'))
 
-write.csv(users,"data/solr/users.csv")
+write.csv(users,"data/solr/users.csv", row.names = FALSE)
 
 
 ### Parse Keywords
@@ -135,5 +135,5 @@ for (i in seq_len(nrow(new.recipes))) {
 
 
 ### Save clean files
-write.csv(new.recipes,"data/solr/recipes.csv")
-write.csv(new.reviews,"data/solr/reviews.csv")
+write.csv(new.recipes,"data/solr/recipes.csv", row.names = FALSE)
+write.csv(new.reviews,"data/solr/reviews.csv", row.names = FALSE)
