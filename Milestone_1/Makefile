@@ -1,13 +1,24 @@
 .PHONY: all clean
 
-all: clean_data data
+all: normalize_data clean_data extract_tables data 
 
-data: data/recipes.csv data/reviews.csv
+data: ../data/recipes.csv ../data/reviews.csv
 
-clean_data: data
+extract_tables: data
+	Rscript extract_tables.R
+
+clean_data: extract_tables
 	Rscript clean_csv.R
 
+normalize_data: clean_data
+	Rscript normalize_data.R
+
 clean:
-	rm data/clean_recipes.csv
-	rm data/clean_reviews.csv
-	rm data/users.csv
+	rm ../data/clean_recipes.csv
+	rm ../data/clean_reviews.csv
+	rm ../data/users.csv
+	rm ../data/categories.csv
+	rm ../data/ingredients.csv
+	rm ../data/keywords.csv
+	rm ../data/recipes_ingredients.csv
+	rm ../data/recipes_keywords.csv

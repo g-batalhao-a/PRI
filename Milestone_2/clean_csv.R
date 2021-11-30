@@ -7,11 +7,11 @@ if (!require("stringr")) install.packages("stringr")
 if (!require("tidyr")) install.packages("tidyr")
 
 ### Import Datasets
-recipes <- read_csv("../data/recipes.csv")
-reviews <- read_csv("../data/reviews.csv")
+recipes <- read_csv("data/recipes.csv")
+reviews <- read_csv("data/reviews.csv")
 
 
-### Remove Unused Columns 
+### Remove Unused Columns
 new.recipes <- select(recipes, -c('RecipeIngredientQuantities'))
 new.reviews <- select(reviews, -c('DateSubmitted'))
 
@@ -36,7 +36,7 @@ new.recipes$TotalTime[is.na(new.recipes$TotalTime)] = 0
 
 ### Remove Outliers
 outlier_data <- select_if(new.recipes,is.numeric) %>% select(-c('Id','UserId','AggregatedRating','ReviewCount','RecipeServings'))
-z_scores <- as.data.frame(sapply(outlier_data, function(data) (abs(data-mean(data))/sd(data))))    
+z_scores <- as.data.frame(sapply(outlier_data, function(data) (abs(data-mean(data))/sd(data))))
 new.recipes <- new.recipes[!rowSums(z_scores>3), ]
 new.recipes <- filter(new.recipes, Calories > 0 & TotalTime > 0)
 
@@ -54,76 +54,41 @@ users <- rename(users, "Id" = "UserId", "Name" = "AuthorName")
 new.recipes <- select(new.recipes, -c('AuthorName'))
 new.reviews <- select(new.reviews, -c('AuthorName'))
 
-write.csv(users,"../data/users.csv")
+write.csv(users,"data/solr/users.csv")
 
 
-### Category Table
-new.recipes$RecipeCategory <- as.factor(new.recipes$RecipeCategory)
-categories.recipes <- levels(new.recipes$RecipeCategory)
-categories <- data.frame("Id" = seq_len(length(categories.recipes)), "Name" = categories.recipes)
-new.recipes$RecipeCategory <- as.numeric(new.recipes$RecipeCategory)
-
-write.csv(categories, "../data/categories.csv")
-
-
-### Keywords table
-keywords = c()
+### Parse Keywords
 for (i in seq_len(nrow(new.recipes))) {
-  row.keywords <- eval(parse(text = new.recipes$Keywords[i]))
-  new.keywords <- row.keywords[which(!(row.keywords %in% keywords))]
-  keywords <- append(keywords, new.keywords)
-  if (i %% 1000 == 0) print(i)
-}
+  keywords <- new.recipes$Keywords[i]
 
-keywords.recipes = levels(as.factor(keywords))
-keywords.csv <- data.frame("Id" = seq_len(length(keywords.recipes)), "Name" = keywords.recipes)
-
-### Build Recipe's Keywords Relation
-keywords.recipes.table = data.frame(RecipeId = numeric(), KeywordId = numeric())
-for (i in 115509:nrow(new.recipes)) {
-  row.keywords <- eval(parse(text = new.recipes$Keywords[i]))
-  if (length(row.keywords) > 0) {
-    values <- as.numeric(factor(row.keywords, levels = keywords.recipes))
-    row.df <- data.frame(RecipeId = new.recipes$Id[i], KeywordId = values)
-    keywords.recipes.table <- rbind(keywords.recipes.table, row.df)
+  if (is.na(keywords)) {
+    next
+  } else if (substring(keywords, 1, 1) == "c") {
+    keywords <- gsub("\"", "", substring(keywords, 3, nchar(keywords) - 1))
+  } else {
+    keywords <- substring(keywords, 2, nchar(keywords) - 1)
   }
+
+  new.recipes$Keywords[i] = keywords
   if (i %% 1000 == 0) print(i)
 }
 
-new.recipes <- select(new.recipes, -c('Keywords'))
 
-write.csv(keywords.csv, "../data/keywords.csv")
-write.csv(keywords.recipes.table, "../data/recipes_keywords.csv")
-
-
-### Ingredients Table
-ingredients = c()
+### Parse Ingredients
 for (i in seq_len(nrow(new.recipes))) {
-  row.ingredients <- eval(parse(text = new.recipes$RecipeIngredientParts[i]))
-  new.ingredients <- row.ingredients[which(!(row.ingredients %in% ingredients))]
-  ingredients <- append(ingredients, new.ingredients)
+  ingredients = new.recipes$RecipeIngredientParts[i]
+
+  if (ingredients == "character(0)") {
+    ingredients <- NA
+  } else if (substring(ingredients, 1, 1) == "c") {
+    ingredients <- gsub("\"", "", substring(ingredients, 3, nchar(ingredients) - 1))
+  } else {
+    ingredients <- substring(ingredients, 2, nchar(ingredients) - 1)
+  }
+
+  new.recipes$RecipeIngredientParts[i] = ingredients
   if (i %% 1000 == 0) print(i)
 }
-
-ingredients.recipes = levels(as.factor(ingredients))
-ingredients.csv <- data.frame("Id" = seq_len(length(ingredients.recipes)), "Name" = ingredients.recipes)
-
-### Build Recipe's Ingredients Relation
-ingredients.recipes.table = data.frame(RecipeId = numeric(), IngredientId = numeric())
-for (i in 342086:nrow(new.recipes)) {
-  row.ingredients <- eval(parse(text = new.recipes$RecipeIngredientParts[i]))
-  if (length(row.ingredients) > 0) {
-    values <- as.numeric(factor(row.ingredients, levels = ingredients.recipes))
-    row.df <- data.frame(RecipeId = new.recipes$Id[i], IngredientId = values)
-    ingredients.recipes.table <- rbind(ingredients.recipes.table, row.df)
-  }
-  if (i %% 100 == 0) print(i)
-}
-
-new.recipes <- select(new.recipes, -c('RecipeIngredientParts'))
-
-write.csv(ingredients.csv, "../data/ingredients.csv")
-write.csv(ingredients.recipes.table, "../data/recipes_ingredients.csv")
 
 
 ### Remove Hour from Dates
@@ -136,10 +101,9 @@ new.recipes <- new.recipes %>% mutate(URL = paste("https://www.food.com/recipe/"
 
 
 ### Recipe Image Parse
-images.recipes <- select(new.recipes, c('Images'))
-for (i in seq_len(nrow(images.recipes))) {
-  image <- images.recipes$Images[i]
-  
+for (i in seq_len(nrow(new.recipes))) {
+  image <- new.recipes$Images[i]
+
   if (image == "character(0)") {
     image <- NA
   } else if (substring(image, 1, 1) == "c") {
@@ -147,11 +111,10 @@ for (i in seq_len(nrow(images.recipes))) {
   } else {
     image <- substring(image, 2, nchar(image) - 1)
   }
-  
-  images.recipes$Images[i] <- image
+
+  new.recipes$Images[i] <- image
   if (i %% 1000 == 0) print(i)
 }
-new.recipes$Images <- images.recipes$Images
 new.recipes <- rename(new.recipes, "Image" = "Images")
 
 
@@ -170,5 +133,5 @@ for (i in seq_len(nrow(new.recipes))) {
 
 
 ### Save clean files
-write.csv(new.recipes,"../data/clean_recipes.csv")
-write.csv(new.reviews,"../data/clean_reviews.csv")
+write.csv(new.recipes,"data/solr/recipes.csv")
+write.csv(new.reviews,"data/solr/reviews.csv")
