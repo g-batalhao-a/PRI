@@ -107,7 +107,7 @@ for (i in seq_len(nrow(new.recipes))) {
   if (image == "character(0)") {
     image <- NA
   } else if (substring(image, 1, 1) == "c") {
-    image <- (eval(parse(text = image)))[1]
+    image <- gsub("\"", "", substring(image, 3, nchar(image) - 1))
   } else {
     image <- substring(image, 2, nchar(image) - 1)
   }
@@ -115,18 +115,20 @@ for (i in seq_len(nrow(new.recipes))) {
   new.recipes$Images[i] <- image
   if (i %% 1000 == 0) print(i)
 }
-new.recipes <- rename(new.recipes, "Image" = "Images")
 
 
 ### Recipe Instructions Parse
 for (i in seq_len(nrow(new.recipes))) {
   instructions <- new.recipes$RecipeInstructions[i]
-  if (substring(instructions, 1, 2) == "c(") {
-    instructions <- eval(parse(text = instructions))
-    instructions <- paste(instructions, collapse = " ")
+
+  if (instructions == "character(0)") {
+    instructions <- NA
+  } else if (substring(instructions, 1, 1) == "c") {
+    instructions <- gsub("\"", "", substring(instructions, 3, nchar(instructions) - 1))
+  } else {
+    instructions <- substring(instructions, 2, nchar(instructions) - 1)
   }
-  else
-    instructions <- substring(instructions, 2, -2)
+
   new.recipes$RecipeInstructions[i] <- instructions
   if (i %% 1000 == 0) print(i)
 }
