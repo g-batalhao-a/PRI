@@ -1,20 +1,24 @@
 {
 	"add-field-type": [
         {
-            "name":"courseTitle",
+            "name":"recipeKeywords",
             "class":"solr.TextField",
-            "indexAnalyzer":{
+            "analyzer":{
                 "tokenizer":{
-                    "class":"solr.StandardTokenizerFactory"
+                    "class":"solr.PatternTokenizerFactory", "pattern": ",\\s*"
                 },
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"}
                 ]
-            },
-            "queryAnalyzer":{
+            }
+        },
+        {
+            "name":"recipeIngredients",
+            "class":"solr.TextField",
+            "analyzer":{
                 "tokenizer":{
-                    "class":"solr.StandardTokenizerFactory"
+                    "class":"solr.PatternTokenizerFactory", "pattern": ",\\s*"
                 },
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
@@ -25,8 +29,13 @@
     ],
     "add-field": [
         {
-            "name": "title",
-            "type": "courseTitle",
+            "name": "Keywords",
+            "type": "recipeKeywords",
+            "indexed": true
+        },
+        {
+            "name": "RecipeIngredientParts",
+            "type": "recipeIngredients",
             "indexed": true
         }
     ]

@@ -1,22 +1,50 @@
-import os
-import glob
-import pandas as pd
+import pandas
 
-filenames = [
-    "clean_recipes.csv",
-    "clean_reviews.csv",
-    "categories.csv",
-    "ingredients.csv",
-    "recipes_ingredients.csv",
-    "keywords.csv",
-    "recipes_keywords.csv",
-    "users.csv"
-]
+json_str = ""
 
-os.chdir("../data")
+### Recipes
 
-#combine all files in the list
-combined_csv = pd.concat([pd.read_csv(f) for f in filenames])
+file_path = "data/solr/recipes.csv"
+print("Opening file: " + file_path)
 
-#export to csv
-combined_csv.to_csv( "combined_csv.csv", index=False, encoding='utf-8-sig')
+data = pandas.read_csv(file_path) # Remove nrows for production
+data['Type'] = "recipe"
+# data.rename({"Id": "id"}, axis = 1, inplace = True)
+
+json_data = data.to_json(orient = "records")[:-1]
+
+json_str = json_str + json_data
+
+
+### Reviews
+
+file_path = "data/solr/reviews.csv"
+print("Opening file: " + file_path)
+
+data = pandas.read_csv(file_path) # Remove nrows for production
+data['Type'] = "review"
+data.drop('Id', axis = 1, inplace = True)
+
+json_data = data.to_json(orient = "records")[1:-1]
+
+json_str = json_str + "," + json_data
+
+
+### Users
+
+file_path = "data/solr/users.csv"
+print("Opening file: " + file_path)
+
+data = pandas.read_csv(file_path) # Remove nrows for production
+data['Type'] = "user"
+# data.rename({"Id": "id"}, axis = 1, inplace = True)
+
+json_data = data.to_json(orient = "records")[1:]
+
+json_str = json_str + "," + json_data
+
+
+### Save JSON
+
+with open("solr/recipes.json", 'w+') as jsonfile:
+    jsonfile.write(json_str)
