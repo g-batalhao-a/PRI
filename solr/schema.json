@@ -12,18 +12,112 @@
                     {"class":"solr.LowerCaseFilterFactory"}
                 ]
             }
+        },
+        {
+            "name":"title",
+            "class":"solr.TextField",
+            "analyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.EdgeNGramFilterFactory", "minGramSize":"2", "maxGramSize":"5"},
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"}
+                ]
+            }
+        },
+        {
+            "name": "integer",
+            "class": "solr.IntPointField",
+            "docValues": true
+        },
+        {
+            "name": "float",
+            "class": "solr.FloatPointField",
+            "docValues": true
+        },
+        {
+            "name": "uiString",
+            "class": "solr.StrField",
+            "indexed": false,
+            "docValues": false
+        },
+        {
+            "name": "date",
+            "class": "solr.DatePointField"
         }
     ],
     "add-field": [
         {
+            "name": "Name",
+            "type": "title"
+        },
+        {
+            "name": "RecipeCategory",
+            "type": "title"
+        },
+        {
+            "name": "Description",
+            "type": "text_en"
+        },
+        {
+            "name": "RecipeInstructions",
+            "type": "text_en"
+        },
+        {
+            "name": "Calories",
+            "type": "float"
+        },
+        {
+            "name": "AggregatedRating",
+            "type": "float"
+        },
+        {
+            "name": "ReviewCount",
+            "type": "integer"
+        },
+        {
+            "name": "RecipeServings",
+            "type": "integer"
+        },
+        {
             "name": "Keywords",
-            "type": "commaSeparatedText",
-            "indexed": true
+            "type": "commaSeparatedText"
         },
         {
             "name": "RecipeIngredientParts",
-            "type": "commaSeparatedText",
-            "indexed": true
+            "type": "commaSeparatedText"
+        },
+        {
+            "name": "Type",
+            "type": "string"
+        },
+        {
+            "name": "Images",
+            "type": "uiString"
+        },
+        {
+            "name": "URL",
+            "type": "uiString"
+        }
+    ],
+    "add-dynamic-field": [
+        {
+            "name": "*Id",
+            "type": "integer"
+        },
+        {
+            "name": "*Time",
+            "type": "integer"
+        },
+        {
+            "name": "Date*",
+            "type": "date"
+        },
+        {
+            "name": "*Content",
+            "type": "float"
         }
     ]
 }
