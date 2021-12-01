@@ -9,7 +9,7 @@ print("Opening file: " + file_path)
 
 data = pandas.read_csv(file_path) # Remove nrows for production
 data['Type'] = "recipe"
-# data.rename({"Id": "id"}, axis = 1, inplace = True)
+data.rename({"Id": "RecipeId"}, axis = 1, inplace = True)
 
 json_data = data.to_json(orient = "records")[:-1]
 
@@ -37,7 +37,7 @@ print("Opening file: " + file_path)
 
 data = pandas.read_csv(file_path) # Remove nrows for production
 data['Type'] = "user"
-# data.rename({"Id": "id"}, axis = 1, inplace = True)
+data.rename({"Id": "UserId"}, axis = 1, inplace = True)
 
 json_data = data.to_json(orient = "records")[1:]
 

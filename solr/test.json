@@ -1,0 +1,50 @@
+[
+    {
+        "Id":[406991.0],
+        "Name":["Umami Beef Stew"],
+        "UserId":[1149951],
+        "CookTime":[10800],
+        "PrepTime":[1800],
+        "TotalTime":[12600],
+        "DatePublished":["2010-01-05T00:00:00Z"],
+        "Description":["Make and share this Umami Beef Stew recipe from Food.com."],
+        "Images":["https://img.sndimg.com/food/image/upload/w_555,h_416,c_fit,fl_progressive,q_95/v1/img/recipes/40/69/91/picuQYhra.jpg, https://img.sndimg.com/food/image/upload/w_555,h_416,c_fit,fl_progressive,q_95/v1/img/recipes/40/69/91/picD76I1N.jpg"],
+        "RecipeCategory":["Stew"],
+        "Keywords":"One Dish Meal, Meat, Winter, < 4 Hours",
+        "RecipeIngredientParts":"stewing beef, flour, salt, pepper, olive oil, onion, garlic cloves, red wine, beef broth, russet potatoes, turnip, carrots, celery ribs, bay leaves, salt, fresh coarse ground black pepper, parsley, cornstarch, water",
+        "AggregatedRating":[5.0],
+        "ReviewCount":[6],
+        "Calories":[503.4],
+        "FatContent":[30.7],
+        "SaturatedFatContent":[10.1],
+        "CholesterolContent":[76.1],
+        "SodiumContent":[510.9],
+        "CarbohydrateContent":[24.3],
+        "FiberContent":[3.6],
+        "SugarContent":[3.8],
+        "ProteinContent":[24.4],
+        "RecipeServings":[8.0],
+        "RecipeInstructions":["Dredge the beef in the flour and lightly salt and pepper., Heat a large frying pan., Add 2 Tb of olive oil and brown 1/2 the beef., Be sure the beef cubes are not too crowded so you can get a nice browning.  An old fashioned frying pan that is not non-stick is preferable.  The meat will brown better and you can scrape up the browned bits from the bottom of the pan., Chop the onion and garlic while the beef is browning., Remove the browned beef and add to the crock pot., Add 2 Tb of olive oil and brown the rest of the beef., \nRemove the beef and place in the crock pot., Scrape the bottom of the frying pan and add that to the crock pot., Add 1 Tb olive oil and saute the onion and garlic until translucent., Quench with the red wine and simmer for 30 seconds., Add the onions, garlic and red wine to the crock pot., Add potatoes, turnip, carrots, celery, bay leaves, salt and pepper., Cook on high for 2-3 hours., Add chopped parsley, mushrooms, peas and browning sauce., Cook on high for 1/2 hour., Mix cornstarch and water, add to crock pot, stir and wait to thicken., \nServe."],
+        "URL":["https://www.food.com/recipe/umami-beef-stew-406991"],
+        "Type":["recipe"],
+        "id":"2d2467e0-9a2a-4a7a-b638-c26cf8090eb3",
+        "_version_":1717943588473536513
+    },
+    {
+        "RecipeId":[12340.0],
+        "UserId":[27643],
+        "Rating":[5],
+        "Review":["SO good! I made this with elk steak for 2. But I made the whole sauce recipe. I think it would also work great with beef! It's the sauce that makes the dish, it's fabulous! This is very easy to make, very quick too. I will definitly make this again! Thanks Dorothy!!"],
+        "DateModified":["2002-10-09T00:00:00Z"],
+        "Type":["review"],
+        "id":"37424b41-16f3-4101-a3bf-35ba241001dc",
+        "_version_":1717943620256923664
+    },
+    {
+        "Id":[27.0],
+        "Name":["Troy A. Hakala"],
+        "Type":["user"],
+        "id":"17e79ead-bab3-4511-9be9-31c4b591c69d",
+        "_version_":1717943733636300801
+    }
+]

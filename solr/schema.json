@@ -1,24 +1,11 @@
 {
 	"add-field-type": [
         {
-            "name":"recipeKeywords",
+            "name":"commaSeparatedText",
             "class":"solr.TextField",
             "analyzer":{
                 "tokenizer":{
-                    "class":"solr.PatternTokenizerFactory", "pattern": ",\\s*"
-                },
-                "filters":[
-                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
-                ]
-            }
-        },
-        {
-            "name":"recipeIngredients",
-            "class":"solr.TextField",
-            "analyzer":{
-                "tokenizer":{
-                    "class":"solr.PatternTokenizerFactory", "pattern": ",\\s*"
+                    "class":"solr.PatternTokenizerFactory", "pattern": ",\\s+"
                 },
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
@@ -30,12 +17,12 @@
     "add-field": [
         {
             "name": "Keywords",
-            "type": "recipeKeywords",
+            "type": "commaSeparatedText",
             "indexed": true
         },
         {
             "name": "RecipeIngredientParts",
-            "type": "recipeIngredients",
+            "type": "commaSeparatedText",
             "indexed": true
         }
     ]
