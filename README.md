@@ -3,7 +3,8 @@
 ## TODO
 
 - Criar script para correr com ou sem test dataset
-- Criar copy fields para queries em vários fields (link: )
+- Criar ??? fields para queries em vários fields (link: )
+- Completar fields das reviews/user
 - Rever os field-types do texto, para já estamos a usar:
   - uiString - unindexed string para o que não queremos que seja pesquisável (URL e Images)
   - string - para o que queremos pesquisar mas não analisar (Type)
