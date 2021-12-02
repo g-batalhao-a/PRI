@@ -1,6 +1,8 @@
 FROM solr:8.10
 
-COPY solr/recipes.json /data/recipes.json
+ARG DB
+
+COPY ${DB} /data/recipes.json
 
 COPY solr/schema.json /data/schema.json
 
