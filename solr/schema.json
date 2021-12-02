@@ -66,6 +66,10 @@
             "type": "text_en"
         },
         {
+            "name": "Review",
+            "type": "text_en"
+        },
+        {
             "name": "Calories",
             "type": "float"
         },
@@ -75,6 +79,10 @@
         },
         {
             "name": "ReviewCount",
+            "type": "integer"
+        },
+        {
+            "name": "Rating",
             "type": "integer"
         },
         {
