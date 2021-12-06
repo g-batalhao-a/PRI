@@ -41,3 +41,4 @@ vignettes/*.pdf
 # Data
 data
 solr/recipes.json
+solr/recipes_nest.json

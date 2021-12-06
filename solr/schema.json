@@ -16,14 +16,25 @@
         {
             "name":"title",
             "class":"solr.TextField",
-            "analyzer":{
+            "indexAnalyzer":{
                 "tokenizer":{
                     "class":"solr.StandardTokenizerFactory"
                 },
                 "filters":[
-                    {"class":"solr.EdgeNGramFilterFactory", "minGramSize":"2", "maxGramSize":"5"},
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
-                    {"class":"solr.LowerCaseFilterFactory"}
+                    {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.EnglishMinimalStemFilterFactory"},
+                    {"class":"solr.EdgeNGramFilterFactory", "minGramSize":"2", "maxGramSize":"5", "preserveOriginal":true}
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.EnglishMinimalStemFilterFactory"}
                 ]
             }
         },
@@ -99,6 +110,10 @@
         },
         {
             "name": "Type",
+            "type": "string"
+        },
+        {
+            "name": "AuthorName",
             "type": "string"
         },
         {

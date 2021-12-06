@@ -12,6 +12,9 @@ DB="solr/recipes.json"
 if [[ $1 == "-t" ]]; then
     echo "Using test dataset. NOT FIT FOR PRODUCTION!"
     DB="solr/recipes_test.json"
+elif [[ $1 == "-n" ]]; then
+    echo "Using nested documents dataset. NOT FIT FOR PRODUCTION!"
+    DB="solr/recipes_nest.json"
 fi
 
 docker-compose build --build-arg DB=$DB
