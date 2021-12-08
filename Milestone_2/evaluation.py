@@ -6,8 +6,18 @@ import json
 import requests
 import pandas as pd
 
-QRELS_FILE = "Milestone_2/berry.txt"
-QUERY_URL = "http://localhost:8983/solr/recipes/select?indent=true&q.op=OR&q=Name%3ABerry&rows=100"
+# Need to change for every request
+BOOSTED = False
+QUERY_ID = "Milestone_2/queries/q1"
+QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=chicken&qf=Name%20Description%20Category%20Keywords%20Ingredients%20Instructions&rows=100"
+
+
+QRELS_FILE = QUERY_ID + "-relevant.txt"
+
+if BOOSTED: QUERY_ID = QUERY_ID + "-boosted"
+REQUEST_FILE = QUERY_ID + ".txt"
+RESULTS_FILE = QUERY_ID + ".tex"
+GRAPH_FILE = QUERY_ID + ".pdf"
 
 # Read qrels to extract relevant documents
 relevant = list(map(lambda el: int(el.strip()), open(QRELS_FILE).readlines()))
@@ -21,10 +31,9 @@ results = requests.get(QUERY_URL).json()['response']['docs']
 # quit()
 
 # Write IDs
-# with open("Milestone_2/berry.txt", "w+") as f:
-#     for doc in results:
-#         f.write(str(doc["RecipeId"]) + " -> " + doc["Name"] + "\n")
-# quit()
+with open(REQUEST_FILE, "w+") as f:
+    for doc in results:
+        f.write(str(doc["RecipeId"]) + " -> " + doc["Name"] + "\n")
 
 ### METRICS TABLE
 
@@ -67,7 +76,7 @@ df = pd.DataFrame([['Metric','Value']] +
     ]
 )
 
-with open('results.tex','w') as tf:
+with open(RESULTS_FILE,'w') as tf:
     tf.write(df.to_latex())
 
 
@@ -108,4 +117,5 @@ for idx, step in enumerate(recall_values):
 
 disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
 disp.plot()
-plt.savefig('precision_recall.pdf')
+
+plt.savefig(GRAPH_FILE)
