@@ -12,19 +12,19 @@ users_data.rename({"Id": "AuthorId", "Name": "AuthorName"}, axis = 1, inplace = 
 ### Reviews
 print("Parsing Reviews")
 reviews_data = pandas.read_csv("data/solr/reviews.csv")
-reviews_data['Type'] = "review"
+#reviews_data['Type'] = "review"
 reviews_data.rename({
     "Id": "ReviewId", 
     "UserId": "AuthorId",
     "DateModified": "Date"
 }, axis = 1, inplace = True)
-reviews_data['Date'] = reviews_data['Date'].astype(str) + 'T00:00:00Z'
+#reviews_data['Date'] = reviews_data['Date'].astype(str) + 'T00:00:00Z'
 reviews_data = reviews_data.merge(users_data, how='left', on='AuthorId')
 
 ### Recipes
 print("Parsing Recipes")
 recipes_data = pandas.read_csv("data/solr/recipes.csv")
-recipes_data['Type'] = "recipe"
+#recipes_data['Type'] = "recipe"
 recipes_data.rename({
     "Id": "RecipeId", 
     "UserId": "AuthorId", 
@@ -52,12 +52,13 @@ for i in indexes:
     if recipe["Instructions"] != None: recipe["Instructions"] = re.split(r"(?<=\.), ", recipe["Instructions"])
 
     reviews = reviews_data[reviews_data["RecipeId"] == recipe["RecipeId"]]
-    
     if reviews.size > 0: 
-        reviews = reviews.drop('RecipeId', axis = 1).to_dict('records')
-        recipe["reviews"] = reviews
+        reviews["Review"] = "{" + reviews["Rating"].astype(str) + " stars, " + reviews["AuthorName"] + "} " + reviews["Review"]
+        recipe["Reviews"] = reviews["Review"].to_list()
 
     json_str = json_str + simplejson.dumps(recipe, ignore_nan = True) + ","
+
+    if i % 1000 == 0: print(i)
 
 json_str = json_str[:-1] + "]"
 

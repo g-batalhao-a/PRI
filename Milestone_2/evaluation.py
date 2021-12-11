@@ -7,9 +7,9 @@ import requests
 import pandas as pd
 
 # Need to change for every request
-BOOSTED = False
-QUERY_ID = "Milestone_2/queries/q3/q3"
-QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=small%20bowl&qf=Name%20Description%20Yield%20Instructions&rows=100"
+BOOSTED = True
+QUERY_ID = "Milestone_2/queries/q4/q4"
+QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&pf=Reviews%5E5&ps=3&q.op=OR&q=easy%20to%20make&qf=Reviews&rows=100"
 
 
 QRELS_FILE = QUERY_ID + "-relevant.txt"

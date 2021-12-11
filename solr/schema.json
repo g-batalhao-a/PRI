@@ -108,20 +108,9 @@
             "type": "uiString"
         },
         {
-            "name": "Type",
-            "type": "string"
-        },
-        {
-            "name": "AuthorName",
-            "type": "string"
-        },
-        {
-            "name": "Rating",
-            "type": "integer"
-        },
-        {
             "name": "Review",
-            "type": "text_en"
+            "type": "text_en",
+            "multiValued": true
         }
     ],
     "add-dynamic-field": [
