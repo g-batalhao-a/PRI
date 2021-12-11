@@ -7,6 +7,8 @@ solr start
 
 sleep 10
 
+cp /data/synonyms.txt /var/solr/data/recipes/conf
+
 # Schema definition via API
 curl -X POST -H 'Content-type:application/json' \
     --data-binary @/data/schema.json \

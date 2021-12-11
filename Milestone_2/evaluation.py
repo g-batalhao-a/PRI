@@ -7,9 +7,9 @@ import requests
 import pandas as pd
 
 # Need to change for every request
-BOOSTED = False
-QUERY_ID = "Milestone_2/queries/q1"
-QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=chicken&qf=Name%20Description%20Category%20Keywords%20Ingredients%20Instructions&rows=100"
+BOOSTED = True
+QUERY_ID = "Milestone_2/queries/q2/q2"
+QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&fq=TotalTime%3A%5B*%20TO%203600%5D&indent=true&q.op=OR&q=oven&qf=Description%20Keywords%5E5%20Instructions%5E2&rows=100"
 
 
 QRELS_FILE = QUERY_ID + "-relevant.txt"
@@ -59,13 +59,18 @@ def p10(results, relevant, n=10):
     """Precision at N"""
     return len([doc for doc in results[:n] if doc['RecipeId'] in relevant])/n
 
+@metric
+def r(results, relevant):
+    return len([doc for doc in results if doc['RecipeId'] in relevant])/len(relevant)
+
 def calculate_metric(key, results, relevant):
     return metrics[key](results, relevant)
 
 # Define metrics to be calculated
 evaluation_metrics = {
     'ap': 'Average Precision',
-    'p10': 'Precision at 10 (P@10)'
+    'p10': 'Precision at 10 (P@10)',
+    'r': 'Recall'
 }
 
 # Calculate all metrics and export results as LaTeX table
