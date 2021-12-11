@@ -7,9 +7,9 @@ import requests
 import pandas as pd
 
 # Need to change for every request
-BOOSTED = True
-QUERY_ID = "Milestone_2/queries/q2/q2"
-QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&fq=TotalTime%3A%5B*%20TO%203600%5D&indent=true&q.op=OR&q=oven&qf=Description%20Keywords%5E5%20Instructions%5E2&rows=100"
+BOOSTED = False
+QUERY_ID = "Milestone_2/queries/q3/q3"
+QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=small%20bowl&qf=Name%20Description%20Yield%20Instructions&rows=100"
 
 
 QRELS_FILE = QUERY_ID + "-relevant.txt"
@@ -123,4 +123,5 @@ for idx, step in enumerate(recall_values):
 disp = PrecisionRecallDisplay([precision_recall_match.get(r) for r in recall_values], recall_values)
 disp.plot()
 
+plt.ylim((0, 1.1))
 plt.savefig(GRAPH_FILE)
