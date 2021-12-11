@@ -8,8 +8,8 @@ import pandas as pd
 
 # Need to change for every request
 BOOSTED = True
-QUERY_ID = "Milestone_2/queries/q4/q4"
-QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&pf=Reviews%5E5&ps=3&q.op=OR&q=easy%20to%20make&qf=Reviews&rows=100"
+QUERY_ID = "Milestone_2/queries/q5/q5"
+QUERY_URL = "http://localhost:8983/solr/recipes/select?debugQuery=false&defType=edismax&fq=Date%3A%5B2008-01-01T00%3A00%3A00Z%20TO%202012-01-01T00%3A00%3A00Z%5D&indent=true&pf=AuthorName%5E20&ps=1&q.op=OR&q=peter%20j&qf=AuthorName&rows=100"
 
 
 QRELS_FILE = QUERY_ID + "-relevant.txt"

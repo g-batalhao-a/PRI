@@ -15,9 +15,7 @@ curl -X POST -H 'Content-type:application/json' \
     http://localhost:8983/solr/recipes/schema
 
 # Populate collection
-curl -X POST -H 'Content-type:application/json' \
-    --data-binary @/data/recipes.json \
-    'http://localhost:8983/solr/recipes/update/json/docs?split=/'
+bin/post -c recipes /data/recipes.json
 
 # Restart in foreground mode so we can access the interface
 solr restart -f

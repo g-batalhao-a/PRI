@@ -20,6 +20,19 @@ reviews_data.rename({
 }, axis = 1, inplace = True)
 #reviews_data['Date'] = reviews_data['Date'].astype(str) + 'T00:00:00Z'
 reviews_data = reviews_data.merge(users_data, how='left', on='AuthorId')
+reviews_data["Review"] = "{" + reviews_data["Rating"].astype(str) + " stars, " + reviews_data["AuthorName"] + "} " + reviews_data["Review"]
+reviews_data['Reviews'] = reviews_data.groupby(['RecipeId'])['Review'].transform(lambda x : '., '.join(map(str, x)))
+reviews_data = reviews_data.drop(['ReviewId', 'Date', 'AuthorId', 'AuthorName', 'Review', 'Rating'], axis = 1).drop_duplicates() 
+
+print(len(reviews_data))
+print(reviews_data.head())
+
+# a = reviews_data[:1000000].groupby(['RecipeId'])['Review'].transform(lambda x : '., '.join(map(str, x)))
+# print(a)
+# for i in range(800, 900):
+#     print(a[i])
+
+# exit()
 
 ### Recipes
 print("Parsing Recipes")
@@ -36,33 +49,39 @@ recipes_data.rename({
     "RecipeInstructions": "Instructions"
 }, axis = 1, inplace = True)
 recipes_data = recipes_data.merge(users_data, how='left', on='AuthorId')
+recipes_data = recipes_data.merge(reviews_data, how='left', on='RecipeId')
 
+jsonfile = open("solr/recipes_full.json", 'w+')
 
-json_str = "["
+jsonfile.write("[")
 
-random.seed(1)
-indexes = sorted(random.sample(range(0, len(recipes_data)), 100))
+# random.seed(1)
+# indexes = sorted(random.sample(range(0, len(recipes_data)), 100))
 
-for i in indexes:
-    recipe = recipes_data[i:i+1].replace({np.nan:None}).to_dict('records')[0]
+for i in range(0, len(recipes_data)):
+    recipe = recipes_data.iloc[[i]].replace({np.nan:None}).to_dict('records')[0]
 
     if recipe["Images"] != None: recipe["Images"] = re.split(", ", recipe["Images"])
     if recipe["Keywords"] != None: recipe["Keywords"] = re.split(", ", recipe["Keywords"])
     if recipe["Ingredients"] != None: recipe["Ingredients"] = re.split(", ", recipe["Ingredients"])
     if recipe["Instructions"] != None: recipe["Instructions"] = re.split(r"(?<=\.), ", recipe["Instructions"])
+    if recipe["Reviews"] != None: recipe["Reviews"] = re.split(r"\., ", recipe["Reviews"])
 
-    reviews = reviews_data[reviews_data["RecipeId"] == recipe["RecipeId"]]
-    if reviews.size > 0: 
-        reviews["Review"] = "{" + reviews["Rating"].astype(str) + " stars, " + reviews["AuthorName"] + "} " + reviews["Review"]
-        recipe["Reviews"] = reviews["Review"].to_list()
+    # reviews = reviews_data.iloc[reviews_data["RecipeId"] == recipe["RecipeId"]]
+    # if reviews.size > 0: 
+    #     reviews = reviews.to_dict('records')[0]
+    #     recipe["Reviews"] = re.split(r"\., ", reviews["Reviews"])
 
-    json_str = json_str + simplejson.dumps(recipe, ignore_nan = True) + ","
+    # json_str = json_str + simplejson.dumps(recipe, ignore_nan = True) + ","
+    jsonfile.write(simplejson.dumps(recipe, ignore_nan = True) + ",")
 
     if i % 1000 == 0: print(i)
 
-json_str = json_str[:-1] + "]"
+
+jsonfile.write("]")
+# json_str = json_str[:-1] + "]"
 
 
 ### Save JSON
-with open("solr/recipes_nest.json", 'w+') as jsonfile:
-    jsonfile.write(json_str)
+# with open("solr/recipes_full.json", 'w+') as jsonfile:
+#     jsonfile.write(json_str)
