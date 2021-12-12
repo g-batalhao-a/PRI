@@ -47,14 +47,14 @@ Get recipes that only need small bowls, which are the only ones I have.
 Query:
 ```
 q: small bowl
-qf: Name Description Yield Instructions
+qf: Name Description Instructions
 ```
 `http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=small%20bowl&qf=Name%20Description%20Yield%20Instructions&rows=100`
 
 Boosted:
 ```
 q: small bowl
-qf: Name Description Yield Instructions
+qf: Name Description Instructions
 pf: Instructions^5
 ps: 4
 ```
