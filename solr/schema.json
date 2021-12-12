@@ -108,6 +108,10 @@
             "type": "uiString"
         },
         {
+            "name": "AuthorName",
+            "type": "text_en"
+        },
+        {
             "name": "Review",
             "type": "text_en",
             "multiValued": true

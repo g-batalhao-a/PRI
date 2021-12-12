@@ -89,17 +89,19 @@ Get Peter J's recipes published in 2008.
 Query:
 ```
 q: peter j
+fq: Date:[2008-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]
 qf: AuthorName
 ```
-`http://localhost:8983/solr/recipes/select?debugQuery=false&defType=edismax&fq=Date%3A%5B2008-01-01T00%3A00%3A00Z%20TO%202012-01-01T00%3A00%3A00Z%5D&indent=true&q.op=OR&q=peter%20j&qf=AuthorName&rows=100`
+`http://localhost:8983/solr/recipes/select?defType=edismax&fq=Date%3A%5B2008-01-01T00%3A00%3A00Z%20TO%202012-01-01T00%3A00%3A00Z%5D&indent=true&q.op=OR&q=peter%20j&qf=AuthorName&rows=100`
 
 Boosted:
 ```
 q: peter j
+fq: Date:[2008-01-01T00:00:00Z TO 2012-01-01T00:00:00Z]
 qf: AuthorName
 pf: AuthorName^20
 ps: 1
 ```
-`http://localhost:8983/solr/recipes/select?debugQuery=false&defType=edismax&fq=Date%3A%5B2008-01-01T00%3A00%3A00Z%20TO%202012-01-01T00%3A00%3A00Z%5D&indent=true&pf=AuthorName%5E20&ps=1&q.op=OR&q=peter%20j&qf=AuthorName&rows=100`
+`http://localhost:8983/solr/recipes/select?defType=edismax&fq=Date%3A%5B2008-01-01T00%3A00%3A00Z%20TO%202012-01-01T00%3A00%3A00Z%5D&indent=true&pf=AuthorName%5E20&ps=1&q.op=OR&q=peter%20j&qf=AuthorName&rows=100`
 
 
