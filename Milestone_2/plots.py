@@ -7,9 +7,9 @@ import requests
 import pandas as pd
 
 # Need to change for every request
-QUERY_ID = "Milestone_2/queries/q4/q4"
-QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=OR&q=easy%20to%20make&qf=Reviews&rows=100"
-QUERY_BOOST_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&pf=Reviews%5E5&ps=3&q.op=OR&q=easy%20to%20make&qf=Reviews&rows=100"
+QUERY_ID = "Milestone_2/queries/q1/q1"
+QUERY_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=chicken&qf=Name%20Description%20Category%20Keywords%20Ingredients%20Instructions&rows=100"
+QUERY_BOOST_URL = "http://localhost:8983/solr/recipes/select?defType=edismax&indent=true&q.op=AND&q=chicken&qf=Name%5E10%20Description%20Category%5E2%20Keywords%20Ingredients%20Instructions%5E2&rows=100"
 
 QRELS_FILE = QUERY_ID + "-relevant.txt"
 GRAPH_FILE = QUERY_ID + "-graph.png"
@@ -46,13 +46,13 @@ recall_values = [
 precision_recall_match = {k: v for k,v in zip(recall_values, precision_values)}
 
 # Extend recall_values to include traditional steps for a better curve (0.1, 0.2 ...)
-recall_values.extend([step for step in np.arange(0, 1.1, 0.1) if step not in recall_values])
+recall_values.extend([step for step in np.arange(0, 1.1, 0.2) if step not in recall_values])
 recall_values = sorted(set(recall_values))
 
 # Extend matching dict to include these new intermediate steps
 for idx, step in enumerate(recall_values):
     if step not in precision_recall_match:
-        if recall_values[idx-1] in precision_recall_match:
+        if idx > 0 and recall_values[idx-1] in precision_recall_match:
             precision_recall_match[step] = precision_recall_match[recall_values[idx-1]]
         else:
             precision_recall_match[step] = precision_recall_match[recall_values[idx+1]]
