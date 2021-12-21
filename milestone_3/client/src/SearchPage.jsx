@@ -18,13 +18,13 @@ export default function SearchPage() {
   }
 
   return (
-    <Grid container spacing={2}>
-    <Grid item xs={3}>
-        <SearchFilters sendRequest={sendRequest} />
-    </Grid>
-    <Grid item xs={9}>
-        <SearchResults data={filteredData} sendRequest={sendRequest} />
-    </Grid>
+    <Grid container>
+      <Grid item xs={3}>
+          <SearchFilters sendRequest={sendRequest} />
+      </Grid>
+      <Grid item xs={9}>
+          <SearchResults data={filteredData} sendRequest={sendRequest} />
+      </Grid>
     </Grid>
   );
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Card, CardHeader, CardContent, CardActions, Collapse, Typography, IconButton, ImageList, ImageListItem, Divider, Chip } from '@mui/material';
+import { Card, Rating, CardHeader, CardContent, CardActions, Collapse, Typography, IconButton, ImageList, ImageListItem, Divider, Chip } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { RecipeContainer } from './style'
 import { format } from "date-fns";
@@ -31,6 +31,7 @@ export default function Recipe({ data }) {
           subheader={data.Category}
         />
         <CardContent sx={{padding: '0px 16px'}}>
+          {data.AggregatedRating && <Rating value={data.AggregatedRating} precision={0.5} readOnly />}
           <Typography variant="body2" color="text.secondary">
             {data.Description}
           </Typography>
@@ -59,7 +60,7 @@ export default function Recipe({ data }) {
               <Chip label="Ingredients" />
             </Divider>
             <ul>
-              { data.Ingredients.map(item => <li key={item}>{item}</li>)}
+              { data.Ingredients.map((item, idx) => <li key={idx}>{item}</li>)}
             </ul>
 
             <Divider>

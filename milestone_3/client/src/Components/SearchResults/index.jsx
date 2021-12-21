@@ -20,9 +20,9 @@ export default function SearchResults({ data, sendRequest }) {
   }
 
   return (
-    <div className="searchResults">
+    <ResultsContainer>
         { !data.recipes || data.recipes.length === 0 ? "No Results!" : renderResults() } 
-    </div>
+    </ResultsContainer>
     
   );
 }

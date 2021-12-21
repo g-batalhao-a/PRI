@@ -20,21 +20,22 @@ const solr = axios.create({
 
 app.get("/search", (req, res) => {
   const search = req.query.query;
+  const withRating = req.query.withRating ? req.query.withRating : "false"
+  const minRating = req.query.minRating ? req.query.minRating : "*"
+  const maxRating = req.query.maxRating ? req.query.maxRating : "*"
   const page = req.query.page ? req.query.page - 1 : 0
   const rows = req.query.rows;
 
-  const fields = [
-    'Name'
-  ];
+  let fq = ''
 
-  const query = fields.map(function (value) {
-    return value + ":" + search;
-  });
-
-  let q = '(' + query.join(' ') + ') ';
+  if (withRating === "true")
+    fq += 'AggregatedRating:[' + minRating + ' TO ' + maxRating + ']'
+  else
+    fq += '-(-AggregatedRating:[' + minRating + ' TO ' + maxRating + '] AggregatedRating:*)'
 
   let params = {
     'q': search,
+    'fq': fq,
     'q.op': 'OR',
     'qf': 'Name Description Ingredients',
     'wt': 'json',
