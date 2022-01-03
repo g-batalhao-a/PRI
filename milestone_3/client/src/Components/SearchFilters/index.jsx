@@ -1,70 +1,32 @@
-import React, { useState } from 'react';
-import { TextField, Button, Typography, Rating, Stack, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import CloseIcon from '@mui/icons-material/Close';
-import { FiltersContainer } from './style';
+import React from 'react';
+import { Grid, Typography, Slider } from '@mui/material';
+import Facet from '../Facet'
 
-const defaultParams = {
-  "query": "*",
-  "withRating": 0,
-  "minRating": 0,
-  "maxRating": 5,
-  "rows": 10
-}
-
-export default function SearchFilters({ sendRequest }) {
-  const [queryParams, setQueryParams] = useState(defaultParams);
-
-  const clearInput = () => {
-    setQueryParams(defaultParams)
-  };
-
-  const handleFilter = (key, value) => {
-    setQueryParams(previousQueryParams => { 
-      previousQueryParams = {...previousQueryParams}
-      previousQueryParams[key] = value
-      return previousQueryParams
-    });
-  }
-
-  const handleSearch = () => sendRequest(queryParams)
-
+export default function SearchFilters({ facets, updateFilters }) {
   return (
-    <FiltersContainer>
-      <Stack spacing={3}>
-        <Button fullWidth variant="outlined" onClick={handleSearch} >Search</Button>
-        <TextField id="outlined-search" fullWidth label="Query" type="search" onChange={(event) => handleFilter("query", event.target.value === "" ? "*" : event.target.value)} />
+    <div>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Typography variant="h5" color="secondary">Filters</Typography>
+        </Grid>
 
-        <div>
-          <Typography component="legend">Rating</Typography>
-          <FormGroup>
-            <FormControlLabel control={<Checkbox />} label="With Rating" onChange={(event, newValue) => handleFilter("withRating", newValue)}/>
-          </FormGroup>
-          <Stack direction="row" spacing={2}>
-          <div>
-            <Typography component="legend">Minimum Rating</Typography>
-            <Rating
-              name="min-rating"
-              value={queryParams.minRating}
-              onChange={(event, newValue) => handleFilter("minRating", newValue)}
-              precision={0.5}
+        <Grid container item xs={12} spacing={1} alignItems="center">
+          <Grid item xs={12} md={5}>
+            <Typography variant="button" color="secondary">Rating</Typography>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Slider defaultValue={[0, 5]}
+              // onChange={handleChange} 
+              valueLabelDisplay="auto" 
+              disableSwap marks step={0.5} min={0} max={5}
             />
-          </div>
-          <div>
-            <Typography component="legend">Maximum Rating</Typography>
-            <Rating
-              name="max-rating"
-              value={queryParams.maxRating}
-              onChange={(event, newValue) => handleFilter("maxRating", newValue)}
-              precision={0.5}
-            />
-          </div>
-        </Stack>
-        </div>
-        
+          </Grid>
+        </Grid>
 
-        
-      </Stack>
-    </FiltersContainer>
+        {facets.Category && <Facet title="Category" buckets={facets.Category}/>}
+        {facets.Ingredients && <Facet title="Ingredients" buckets={facets.Ingredients}/>}
+
+      </Grid>
+    </div>
   );
 }

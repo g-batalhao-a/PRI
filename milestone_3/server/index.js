@@ -20,18 +20,14 @@ const solr = axios.create({
 
 app.get("/search", (req, res) => {
   const search = req.query.query;
-  const withRating = req.query.withRating ? req.query.withRating : "false"
-  const minRating = req.query.minRating ? req.query.minRating : "*"
-  const maxRating = req.query.maxRating ? req.query.maxRating : "*"
   const page = req.query.page ? req.query.page - 1 : 0
-  const rows = req.query.rows;
 
   let fq = ''
 
-  if (withRating === "true")
-    fq += 'AggregatedRating:[' + minRating + ' TO ' + maxRating + ']'
-  else
-    fq += '-(-AggregatedRating:[' + minRating + ' TO ' + maxRating + '] AggregatedRating:*)'
+  // if (withRating === "true")
+  //   fq += 'AggregatedRating:[' + minRating + ' TO ' + maxRating + ']'
+  // else
+  //   fq += '-(-AggregatedRating:[' + minRating + ' TO ' + maxRating + '] AggregatedRating:*)'
 
   let params = {
     'q': search,
@@ -40,9 +36,25 @@ app.get("/search", (req, res) => {
     'qf': 'Name Description Ingredients',
     'wt': 'json',
     'defType': 'edismax',
-    'rows': rows,
-    'start': page * rows
+    'rows': 10,
+    'start': page * 10,
+    'json.facet': {
+      "Category": {
+        "type": "terms",
+        "field": "Category",
+        "limit": 500
+      },
+      "Ingredients": {
+        "type": "terms",
+        "field": "Ingredients",
+        "limit": 100000
+      }
+    }
   };
+
+  if (req.query.sort && req.query.sort !== "Relevance") {
+    params["sort"] = req.query.sort
+  }
 
   console.log(params);
 
@@ -50,11 +62,16 @@ app.get("/search", (req, res) => {
     .then(function (response) {
       const data = [...new Map(response.data.response.docs.map((item, key) => [item['RecipeId'], item])).values()]
 
+      let facets = response.data.facets
+      delete facets["count"]
+      facets = Object.fromEntries(Object.entries(facets).map(([key, { buckets }]) => [key, buckets]));
+
       const to_send = {
         recipes: data,
         total: response.data.response.numFound,
-        pages: Math.ceil(response.data.response.numFound / rows),
-        queryParams: req.query
+        pages: Math.ceil(response.data.response.numFound / 10),
+        queryParams: req.query,
+        facets: facets
       }
 
       res.json(to_send)

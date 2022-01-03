@@ -1,12 +1,41 @@
+import React from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import './index.css';
 import App from './App';
-import "./index.css"
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#B4CDED',
+    },
+    secondary: {
+      main: '#344966',
+    },
+  },
+  typography: {
+    fontFamily: [
+      'Montserrat',
+      '-apple-system',
+      'BlinkMacSystemFont',
+      '"Segoe UI"',
+      'Roboto',
+      '"Helvetica Neue"',
+      'Arial',
+      'sans-serif',
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(','),
+  },
+});
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
+  </React.StrictMode>,
   document.getElementById('root')
 );
 
