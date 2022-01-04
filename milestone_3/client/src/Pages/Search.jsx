@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import SearchFilters from "../Components/SearchFilters";
 import SearchResults from "../Components/SearchResults";
 import SearchBar from "../Components/SearchBar"
-import { Grid } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import axios from 'axios'
+import { SearchContext } from '../Context/SearchContext';
 import Sort from '../Components/Sort';
 
 const api = axios.create({
@@ -11,8 +12,7 @@ const api = axios.create({
 })
 
 export default function Search() {
-  const [loading, setLoading] = useState(false);
-  const [data, setData] = useState({});
+  const {setFacets, setData, setLoading} = useContext(SearchContext)
 
   const sendRequest = async (params) => {
     setLoading(true)
@@ -20,26 +20,16 @@ export default function Search() {
     console.log(response)
     setData(response)
     setLoading(false)
+    return response
   }
 
   React.useEffect(() => {
-    sendRequest({ query: "*" })
+    handleSearch("*")
   }, [])
 
-  const handleSearch = (searchQuery) => {
-    sendRequest({ query: searchQuery ? searchQuery : "*" })
-  }
-
-  const handleSort = (sort) => {
-    sendRequest({ ...data.queryParams, sort })
-  }
-
-  const handleFilters = (filter, value) => {
-    console.log("Filter " + filter + " changed to: " + value)
-  }
-
-  const handlePagination = (page) => {
-    sendRequest({ ...data.queryParams, page })
+  const handleSearch = async (searchQuery) => {
+    const response = await sendRequest({ query: searchQuery ? searchQuery : "*" })
+    setFacets(response.facets)
   }
 
   return (
@@ -48,17 +38,13 @@ export default function Search() {
         <SearchBar handleSearch={handleSearch}/>
       </Grid>
       <Grid item xs={6} md={4} lg={3}>
-        <Sort handleSort={handleSort}/>
+        <Sort sendRequest={sendRequest}/>
       </Grid>
       <Grid item xs={6} md={3} lg={2}>
-        <SearchFilters facets={data.facets ? data.facets : {}} handleFilters={handleFilters} />
+        <SearchFilters sendRequest={sendRequest} />
       </Grid>
       <Grid item xs={12} md={9}>
-        {
-          loading
-            ? "Loading..."
-            : <SearchResults data={data} handlePagination={handlePagination} />
-        }
+        <SearchResults sendRequest={sendRequest} />
       </Grid>
     </Grid>
   );

@@ -7,7 +7,7 @@ import StyledRating from '../StyledRating'
 
 export default function Recipe({ data }) {
   return (
-    <div style={{ margin: '1em' }}>
+    <div style={{ margin: '1em 0' }}>
       <Card>
         <CardHeader title={data.Name} subheader={data.Category} style={{paddingBottom: 0}}/>
         <CardContent sx={{padding: '0px 16px'}}>
