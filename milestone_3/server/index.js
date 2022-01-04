@@ -15,7 +15,7 @@ app.use(function(req, res, next) {
 
 const solr = axios.create({
   baseURL: 'http://localhost:8983/solr/recipes',
-  timeout: 1000
+  timeout: 5000
 });
 
 app.get("/search", (req, res) => {
@@ -42,12 +42,14 @@ app.get("/search", (req, res) => {
       "Category": {
         "type": "terms",
         "field": "Category",
-        "limit": 500
+        "limit": 500,
+        "sort": "index"
       },
       "Ingredients": {
         "type": "terms",
         "field": "Ingredients",
-        "limit": 100000
+        "limit": 100000,
+        "sort": "index"
       }
     }
   };
