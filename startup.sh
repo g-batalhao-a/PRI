@@ -3,7 +3,7 @@
 precreate-core recipes
 
 # Start Solr in background mode so we can use the API to upload the schema
-solr start
+solr start -Dsolr.ltr.enabled=true
 
 sleep 10
 

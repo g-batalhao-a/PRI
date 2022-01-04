@@ -5,12 +5,12 @@ import re
 
 ### Users
 print("Parsing Users")
-users_data = pandas.read_csv("data/solr/users.csv")
+users_data = pandas.read_csv("../data/solr/users.csv")
 users_data.rename({"Id": "AuthorId", "Name": "AuthorName"}, axis = 1, inplace = True)
 
 ### Reviews
 print("Parsing Reviews")
-reviews_data = pandas.read_csv("data/solr/reviews.csv")
+reviews_data = pandas.read_csv("../data/solr/reviews.csv")
 reviews_data.rename({
     "Id": "ReviewId", 
     "UserId": "AuthorId",
@@ -23,7 +23,7 @@ reviews_data = reviews_data.drop(['ReviewId', 'Date', 'AuthorId', 'AuthorName', 
 
 ### Recipes
 print("Parsing Recipes")
-recipes_data = pandas.read_csv("data/solr/recipes.csv")
+recipes_data = pandas.read_csv("../data/solr/recipes.csv")
 recipes_data.rename({
     "Id": "RecipeId", 
     "UserId": "AuthorId", 
@@ -37,7 +37,7 @@ recipes_data.rename({
 recipes_data = recipes_data.merge(users_data, how='left', on='AuthorId')
 recipes_data = recipes_data.merge(reviews_data, how='left', on='RecipeId')
 
-jsonfile = open("solr/recipes.json", 'w+')
+jsonfile = open("../solr/recipes.json", 'w+')
 jsonfile.write("[")
 
 for i in range(0, len(recipes_data)):
