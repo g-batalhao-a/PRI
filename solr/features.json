@@ -1,23 +1,28 @@
 [
-    {
-        "name" : "documentRecency",
-        "class" : "org.apache.solr.ltr.feature.SolrFeature",
-        "params" : {
-          "q" : "{!func}recip( ms(NOW,Date), 3.16e-11, 1, 1)"
-        }
-    },
-    {
-        "name" : "documentRating",
-        "class" : "org.apache.solr.ltr.feature.SolrFeature",
-        "params" : {
-          "bf" : "{!func}sub(1,recip(AggregatedRating, 3.16e-11, 1, 1))"
-        }
-    },
-    {
-        "name" : "documentReviewCount",
-        "class" : "org.apache.solr.ltr.feature.SolrFeature",
-        "params" : {
-          "bf" : "{!func}sub(1,recip(ReviewCount, 3.16e-11, 1, 1))"
-        }
-    }   
+  {
+    "name" : "documentRecency",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}recip(ms(NOW, Date), 3.16e-11, 1, 1)"
+    }
+  },
+  {
+    "name" : "documentRating",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}div(AggregatedRating, 5.0)"
+    }
+  },
+  {
+    "name" : "documentReviewCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(ReviewCount, 0, 1)"
+    }
+  },
+  {
+    "name" : "originalScore",
+    "class" : "org.apache.solr.ltr.feature.OriginalScoreFeature",
+    "params" : {}
+  }
 ]
