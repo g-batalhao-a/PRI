@@ -68,6 +68,11 @@
             "type": "title"
         },
         {
+            "name": "Category_Facet",
+            "type": "string",
+            "stored": false
+        },
+        {
             "name": "Keywords",
             "type": "text_en",
             "multiValued": true
@@ -75,6 +80,12 @@
         {
             "name": "Ingredients",
             "type": "text_en",
+            "multiValued": true
+        },
+        {
+            "name": "Ingredients_Facet",
+            "type": "string",
+            "stored": false,
             "multiValued": true
         },
         {
@@ -128,6 +139,16 @@
         {
             "name": "*Content",
             "type": "float"
+        }
+    ],
+    "add-copy-field": [
+        {
+            "source": "Category",
+            "dest": "Category_Facet"
+        },
+        {
+            "source": "Ingredients",
+            "dest": "Ingredients_Facet"
         }
     ]
 }

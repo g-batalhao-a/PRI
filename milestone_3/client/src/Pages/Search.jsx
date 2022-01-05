@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import SearchFilters from "../Components/SearchFilters";
 import SearchResults from "../Components/SearchResults";
 import SearchBar from "../Components/SearchBar"
-import { Grid, LinearProgress } from '@mui/material';
+import { Grid } from '@mui/material';
 import axios from 'axios'
 import { SearchContext } from '../Context/SearchContext';
 import Sort from '../Components/Sort';
@@ -12,7 +12,7 @@ const api = axios.create({
 })
 
 export default function Search() {
-  const {setFacets, setData, setLoading} = useContext(SearchContext)
+  const { setData, setLoading } = useContext(SearchContext)
 
   const sendRequest = async (params) => {
     setLoading(true)
@@ -20,16 +20,14 @@ export default function Search() {
     console.log(response)
     setData(response)
     setLoading(false)
-    return response
   }
 
   React.useEffect(() => {
-    handleSearch("*")
+    sendRequest({ query: "*" })
   }, [])
 
-  const handleSearch = async (searchQuery) => {
-    const response = await sendRequest({ query: searchQuery ? searchQuery : "*" })
-    setFacets(response.facets)
+  const handleSearch = (searchQuery) => {
+    sendRequest({ query: searchQuery ? searchQuery : "*" })
   }
 
   return (

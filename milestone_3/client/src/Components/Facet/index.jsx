@@ -17,12 +17,20 @@ const loadMoreItems = (startIndex, stopIndex) => {
   );
 };
 
-export default function Facet({ title, buckets }) {
-  // const [selected, setSelected] = useState([])
+export default function Facet({ title, handleFilters, buckets }) {
+  const [selected, setSelected] = useState([])
 
-  // const handleChange = (event) => {
-  //   setSelected(typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value);
-  // };
+  const handleChange = async (event) => {
+    let newSelected;
+
+    if (event.target.checked)
+      newSelected = [...selected, event.target.value]
+    else
+      newSelected = [...selected].filter(e => e !== event.target.value)
+      
+    handleFilters(title, newSelected)
+    setSelected(newSelected)
+  };
 
   function FacetItem({ index, style }) {
     const value = buckets[index].val
@@ -30,7 +38,7 @@ export default function Facet({ title, buckets }) {
     return (
       <div style={style}>
         <FormControlLabel
-          control={<Checkbox />}
+          control={<Checkbox value={value} checked={selected.indexOf(value) !== -1} onChange={handleChange}/>}
           label={
             <Stack direction="row" spacing={0.5}>
               <Typography variant="body1" color="secondary" sx={{textTransform: 'capitalize'}}>{value}</Typography>
@@ -70,7 +78,6 @@ export default function Facet({ title, buckets }) {
           )}
         </InfiniteLoader>
       </Grid>
-      
     </Grid>
   );
 }

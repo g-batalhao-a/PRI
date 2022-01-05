@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardContent, CardActions, Typography} from '@mui/material';
+import { Card, CardHeader, CardContent, CardActions, Typography, Stack } from '@mui/material';
 import { format } from "date-fns";
 import { Link } from 'react-router-dom';
 import LaunchIcon from '@mui/icons-material/Launch';
@@ -11,7 +11,14 @@ export default function Recipe({ data }) {
       <Card>
         <CardHeader title={data.Name} subheader={data.Category} style={{paddingBottom: 0}}/>
         <CardContent sx={{padding: '0px 16px'}}>
-          {data.AggregatedRating && <StyledRating value={data.AggregatedRating} color="primary" precision={0.5} readOnly/>}
+          {data.AggregatedRating && data.ReviewCount && 
+            <Stack direction="row" spacing={1}>
+              <StyledRating value={data.AggregatedRating} color="primary" precision={0.5} readOnly/>
+              <Typography variant="button" color="text.secondary">
+                ({data.ReviewCount})
+              </Typography>
+            </Stack>
+          }
           <Typography variant="body2" color="text.secondary">
             {data.Description}
           </Typography>

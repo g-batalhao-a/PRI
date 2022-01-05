@@ -4,11 +4,12 @@ import Facet from '../Facet'
 import { SearchContext } from '../../Context/SearchContext';
 
 export default function SearchFilters({ sendRequest }) {
-  const {facets} = useContext(SearchContext)
+  const { data } = useContext(SearchContext)
 
   const handleFilters = (filter, value) => {
-    // sendRequest(...)
-    console.log("Filter " + filter + " changed to: " + value)
+    let newParams = { ...data.queryParams, filter, page: 1 }
+    newParams[filter] = value
+    sendRequest(newParams)
   }
 
   return useMemo(() => {
@@ -25,18 +26,18 @@ export default function SearchFilters({ sendRequest }) {
             </Grid>
             <Grid item xs={12} md={6}>
               <Slider defaultValue={[0, 5]}
-                // onChange={handleChange} 
+                onChangeCommitted={(e, val) => handleFilters("rating", val)} 
                 valueLabelDisplay="auto" 
                 disableSwap marks step={0.5} min={0} max={5}
               />
             </Grid>
           </Grid>
 
-          {facets.Category && <Facet title="Category" buckets={facets.Category}/>}
-          {facets.Ingredients && <Facet title="Ingredients" buckets={facets.Ingredients}/>}
+          {data.facets && data.facets.Category && <Facet title="category" handleFilters={handleFilters} buckets={data.facets.Category}/>}
+          {data.facets && data.facets.Ingredients && <Facet title="ingredients"  handleFilters={handleFilters} buckets={data.facets.Ingredients}/>}
 
         </Grid>
       </div>
     )
-  }, [facets]);
+  }, [data]);
 }
