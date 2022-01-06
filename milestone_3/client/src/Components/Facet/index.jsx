@@ -33,6 +33,7 @@ export default function Facet({ title, handleFilters, buckets }) {
   };
 
   function FacetItem({ index, style }) {
+    const name = buckets[index].name
     const value = buckets[index].val
     const count = buckets[index].count
     return (
@@ -41,7 +42,7 @@ export default function Facet({ title, handleFilters, buckets }) {
           control={<Checkbox value={value} checked={selected.indexOf(value) !== -1} onChange={handleChange}/>}
           label={
             <Stack direction="row" spacing={0.5}>
-              <Typography variant="body1" color="secondary" sx={{textTransform: 'capitalize'}}>{value}</Typography>
+              <Typography variant="body1" color="secondary" sx={{textTransform: 'capitalize'}}>{ name ? name : value}</Typography>
               {itemStatusMap[index] === LOADED && <Typography variant="button" color="primary">({count})</Typography>}
             </Stack>
           } 

@@ -13,7 +13,7 @@ export default function Recipe({ data }) {
         <CardContent sx={{padding: '0px 16px'}}>
           {data.AggregatedRating && data.ReviewCount && 
             <Stack direction="row" spacing={1}>
-              <StyledRating value={data.AggregatedRating} color="primary" precision={0.5} readOnly/>
+              <StyledRating value={data.AggregatedRating} color="primary" precision={0.1} readOnly/>
               <Typography variant="button" color="text.secondary">
                 ({data.ReviewCount})
               </Typography>

@@ -7,8 +7,13 @@ export default function SearchFilters({ sendRequest }) {
   const { data } = useContext(SearchContext)
 
   const handleFilters = (filter, value) => {
-    let newParams = { ...data.queryParams, filter, page: 1 }
-    newParams[filter] = value
+    let newParams = { ...data.queryParams, page: 1 }
+    if (filter !== "time") {
+      newParams["filter"] = filter
+      newParams[filter] = value
+    }
+    else newParams[filter] = value[0]
+
     sendRequest(newParams)
   }
 
@@ -33,6 +38,7 @@ export default function SearchFilters({ sendRequest }) {
             </Grid>
           </Grid>
 
+          {data.facets && data.facets.Time && <Facet title="time" handleFilters={handleFilters} buckets={data.facets.Time.filter(b => b.count > 0)}/>}
           {data.facets && data.facets.Category && <Facet title="category" handleFilters={handleFilters} buckets={data.facets.Category}/>}
           {data.facets && data.facets.Ingredients && <Facet title="ingredients"  handleFilters={handleFilters} buckets={data.facets.Ingredients}/>}
 
