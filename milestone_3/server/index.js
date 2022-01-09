@@ -29,7 +29,7 @@ const sendSolrRequest = (params) => {
 const parseFacets = (facets) => {
   let parsedFacets = facets
   delete parsedFacets["count"]
-  parsedFacets = Object.fromEntries(Object.entries(facets).map(([key, { buckets }]) => [key, buckets]));
+  parsedFacets = Object.fromEntries(Object.entries(parsedFacets).map(([key, { buckets }]) => [key, buckets]));
 
   if (parsedFacets.Time) {
     parsedFacets.Time[0]["name"] = "< 5m"
@@ -47,44 +47,31 @@ const parseFacets = (facets) => {
 }
 
 
-const getFilters = (params, filter, rating, time, category, ingredients) => {
+const getFilters = (filter, rating, time, category, ingredients) => {
   let fq = []
 
+  // Ratings
   if (rating && rating.length === 2) {
     if (parseFloat(rating[0]) > 0)
       fq.push('AggregatedRating:[' + rating[0] + ' TO ' + rating[1] + ']')
     else // This returns recipes that have no aggregated rating
       fq.push('-(-AggregatedRating:[' + rating[0] + ' TO ' + rating[1] + '] AggregatedRating:*)')
   }
-  if (filter) {
-    if (filter === "category") {
-      params['json.facet']["Category"]["domain"] = { "excludeTags":"CAT" }
 
-      if (time && time.values)
-        fq.push('TotalTime:[' + time[0] + ' TO ' + time[1] + ']')
-      if (category) 
-        fq.push('{!tag=CAT}Category_Facet:(' + category.map(e => "\"" + e + "\"").join(' ') + ')')
-      if (ingredients)
-        fq.push('Ingredients_Facet:(' + ingredients.map(e => "\"" + e + "\"").join(' ') + ')')
-    }
-    else if (filter === "ingredients") {
-      params['json.facet']["Ingredients"]["domain"] = { "excludeTags":"ING" }
+  // Total Time
+  if (time && time.length === 2)
+    fq.push('TotalTime:[' + time[0] + ' TO ' + time[1] + ']')
 
-      if (time && time.length === 2)
-        fq.push('TotalTime:[' + time[0] + ' TO ' + time[1] + ']')
-      if (category) 
-        fq.push('Category_Facet:(' + category.map(e => "\"" + e + "\"").join(' ') + ')')
-      if (ingredients)
-        fq.push('{!tag=ING}Ingredients_Facet:(' + ingredients.map(e => "\"" + e + "\"").join(' ') + ')')
-    }
+  // Category
+  if (category) {
+    const tag = (filter === "category" ? '{!tag=CAT}' : '')
+    fq.push(tag + 'Category_Facet:(' + category.map(e => "\"" + e + "\"").join(' ') + ')')
   }
-  else {
-    if (time && time.length === 2)
-      fq.push('TotalTime:[' + time[0] + ' TO ' + time[1] + ']')
-    if (category) 
-      fq.push('Category_Facet:(' + category.map(e => "\"" + e + "\"").join(' ') + ')')
-    if (ingredients)
-      fq.push('Ingredients_Facet:(' + ingredients.map(e => "\"" + e + "\"").join(' ') + ')')
+
+  // Ingredients
+  if (ingredients) {
+    const tag = (filter === "ingredients" ? '{!tag=ING}' : '')
+    fq.push(tag + 'Ingredients_Facet:(' + ingredients.map(e => "\"" + e + "\"").join(' ') + ')')
   }
 
   return fq
@@ -110,7 +97,7 @@ app.get("/search", async (req, res) => {
     'defType': 'edismax',
     'rows': 10,
     'start': page * 10,
-    'json.facet': {
+    'json.facet': JSON.stringify({
       "Time": {
         "type": "range",
         "field": "TotalTime",
@@ -124,25 +111,25 @@ app.get("/search", async (req, res) => {
         "type": "terms",
         "field": "Category_Facet",
         "limit": 500,
-        "sort": "index"
+        "sort": "index",
+        "domain": { "excludeTags": "CAT" }
       },
       "Ingredients": {
         "type": "terms",
         "field": "Ingredients_Facet",
         "limit": 100000,
-        "sort": "index"
+        "sort": "index",
+        "domain": { "excludeTags":"ING" }
       }
-    }
+    })
   };
 
 
   // Filters
-  let fq = getFilters(params, filter, rating, time, category, ingredients)
+  let fq = getFilters(filter, rating, time, category, ingredients)
 
   if (fq.length > 0)
     params["fq"] = fq
-
-  params['json.facet'] = JSON.stringify(params['json.facet'])
 
 
   // Sort
