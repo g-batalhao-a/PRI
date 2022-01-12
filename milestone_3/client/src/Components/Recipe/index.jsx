@@ -29,7 +29,7 @@ export default function Recipe({ data }) {
         <CardActions disableSpacing sx={{padding: '16px'}}>
           <Typography variant="body2" color="secondary">{data.AuthorName} | {format(new Date(data.Date), "MMMM do, yyyy")}</Typography>
           <div style={{ marginLeft: 'auto' }}>
-            <Link to={"/recipe/" + data.RecipeId}><LaunchIcon/></Link>
+            <Link to={"/recipe/" + data.RecipeId} target="_blank" rel="noopener noreferrer"><LaunchIcon/></Link>
           </div>
         </CardActions>
       </Card>

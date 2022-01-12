@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Checkbox, FormControlLabel, Grid, Stack, Typography } from '@mui/material';
 import { FixedSizeList as List } from "react-window";
 import InfiniteLoader from "react-window-infinite-loader";
+import { SearchContext } from '../../Context/SearchContext';
 
 const LOADED = 2;
 let itemStatusMap = {};
@@ -18,6 +19,7 @@ const loadMoreItems = (startIndex, stopIndex) => {
 };
 
 export default function Facet({ title, handleFilters, buckets }) {
+  const { query } = useContext(SearchContext)
   const [selected, setSelected] = useState([])
 
   const handleChange = async (event) => {
@@ -50,6 +52,10 @@ export default function Facet({ title, handleFilters, buckets }) {
       </div>
     );
   }
+
+  React.useEffect(() => {
+    setSelected([])
+  }, [query])
 
   return (
     <Grid container item xs={12}>

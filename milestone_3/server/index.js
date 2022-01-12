@@ -104,8 +104,8 @@ app.get("/search", async (req, res) => {
   // General Parameters
   let params = {
     'q': search,
-    'q.op': 'OR',
-    'qf': 'Name Description Ingredients Keywords Instructions Reviews AuthorName',
+    'q.op': 'AND',
+    'qf': 'Name^5 Description Ingredients^2 Keywords^2 Instructions Reviews^0.5 AuthorName^0.2',
     'wt': 'json',
     'defType': 'edismax',
     'rows': 10,
@@ -149,7 +149,7 @@ app.get("/search", async (req, res) => {
   if (sort && sort !== "Relevance")
     params["sort"] = sort
   else
-    params["rq"] = '{!ltr model=myModel reRankDocs=100}'
+    params["rq"] = '{!ltr model=myModel reRankDocs=500}'
 
 
   // Request

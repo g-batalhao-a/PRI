@@ -12,7 +12,7 @@ const api = axios.create({
 })
 
 export default function Search() {
-  const { setData, setLoading } = useContext(SearchContext)
+  const { setData, setLoading, setQuery } = useContext(SearchContext)
 
   const sendRequest = async (params) => {
     setLoading(true)
@@ -23,11 +23,12 @@ export default function Search() {
   }
 
   React.useEffect(() => {
-    sendRequest({ query: "*" })
+    handleSearch()
   }, [])
 
   const handleSearch = (searchQuery) => {
     sendRequest({ query: searchQuery ? searchQuery : "*" })
+    setQuery(searchQuery ? searchQuery : "*")
   }
 
   return (
