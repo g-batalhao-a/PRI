@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { Grid, LinearProgress, Pagination, Typography } from '@mui/material';
+import { LinearProgress, Pagination, Typography } from '@mui/material';
 import Recipe from '../Recipe'
 import { SearchContext } from '../../Context/SearchContext';
 

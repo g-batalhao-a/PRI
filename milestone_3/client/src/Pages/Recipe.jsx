@@ -78,6 +78,11 @@ export default function Recipe() {
             ))}
           </Grid>
         )}
+        {recipe.Description && (
+          <Grid item xs={12} >
+            <Typography variant="body1" color="secondary">{recipe.Description}</Typography>
+          </Grid>
+        )}
         <Grid container item xs={12} spacing={2}>
           <Grid item xs={6}>
             <Typography variant="h6" color="secondary">Preparation Time: </Typography>
