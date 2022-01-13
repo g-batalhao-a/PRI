@@ -1,0 +1,3 @@
+RecipeId,id,score,[features],URL,query
+173164,20c9fe06-4f40-4d3e-99a1-5471d3d991f5,12.095509,"documentRecency=0.060480285,documentRating=1.0,documentReviewCount=6.529546E-4,originalScore=12.095509",http://localhost:3000/recipe/173164,"['chicken', 'apple pie', 'easy bread', 'pasta bolognese', 'oatmeal']"
+103744,c19bfb7e-c01a-45d5-b402-93e07d5ec43e,3.8663669,"documentRecency=0.055160925,documentRating=1.0,documentReviewCount=0.006203069,originalScore=3.8663669",http://localhost:3000/recipe/103744,"['chicken', 'apple pie', 'easy bread', 'pasta bolognese', 'oatmeal']"
