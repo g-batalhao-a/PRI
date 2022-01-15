@@ -92,7 +92,7 @@ app.get("/search", async (req, res) => {
   let params = {
     'q': search,
     'q.op': 'AND',
-    'qf': 'Name^5 Description Ingredients^2 Keywords^2 Instructions Reviews^0.5 AuthorName^0.2',
+    'qf': 'Name^5 Description Category^2 Ingredients^2 Keywords^2 Instructions Reviews^0.5 AuthorName^0.2',
     'wt': 'json',
     'defType': 'edismax',
     'rows': 10,
