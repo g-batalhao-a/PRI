@@ -1,26 +1,110 @@
 [
   {
-    "name" : "documentRecency",
+    "store" : "recipes_store",
+    "name" : "queryMatchName",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=Name}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchDescription",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=Description}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchCategory",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {  "q" : "{!dismax qf=Category}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchIngredients",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=Ingredients}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchKeywords",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=Keywords}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchInstructions",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=Instructions}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchReviews",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=Reviews}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "queryMatchAuthorName",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : { "q" : "{!dismax qf=AuthorName}${text}" }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "recency",
     "class" : "org.apache.solr.ltr.feature.SolrFeature",
     "params" : {
       "q" : "{!func}recip(ms(NOW, Date), 3.16e-11, 1, 1)"
     }
   },
   {
-    "name" : "documentRating",
+    "store" : "recipes_store",
+    "name" : "rating",
     "class" : "org.apache.solr.ltr.feature.SolrFeature",
     "params" : {
       "q" : "{!func}div(AggregatedRating, 5.0)"
     }
   },
   {
-    "name" : "documentReviewCount",
+    "store" : "recipes_store",
+    "name" : "reviewCount",
     "class" : "org.apache.solr.ltr.feature.SolrFeature",
     "params" : {
       "q" : "{!func}scale(ReviewCount, 0, 1)"
     }
   },
   {
+    "store" : "recipes_store",
+    "name" : "keywordCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(KeywordsCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "ingredientCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(IngredientsCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "instructionCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(InstructionsCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "imageCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(ImagesCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
     "name" : "originalScore",
     "class" : "org.apache.solr.ltr.feature.OriginalScoreFeature",
     "params" : {}
