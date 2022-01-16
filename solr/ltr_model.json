@@ -1,17 +1,12 @@
 {
+    "store": "recipes_store",
     "class" : "org.apache.solr.ltr.model.LinearModel",
     "name" : "myModel",
     "features" : [
-      { "name" : "documentRecency" },
-      { "name" : "documentRating" },
-      { "name" : "documentReviewCount" },
       { "name" : "originalScore" }
     ],
     "params" : {
       "weights" : {
-        "documentRecency" : 0.2,
-        "documentRating" : 1.0,
-        "documentReviewCount" : 0.5,
         "originalScore": 0.5
       }
     }
