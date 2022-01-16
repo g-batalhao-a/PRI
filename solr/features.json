@@ -13,6 +13,12 @@
   },
   {
     "store" : "recipes_store",
+    "name" : "queryMatchCategory",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {  "q" : "{!dismax qf=Category}${text}" }
+  },
+  {
+    "store" : "recipes_store",
     "name" : "queryMatchIngredients",
     "class" : "org.apache.solr.ltr.feature.SolrFeature",
     "params" : { "q" : "{!dismax qf=Ingredients}${text}" }
@@ -63,6 +69,38 @@
     "class" : "org.apache.solr.ltr.feature.SolrFeature",
     "params" : {
       "q" : "{!func}scale(ReviewCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "keywordCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(KeywordsCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "ingredientCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(IngredientsCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "instructionCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(InstructionsCount, 0, 1)"
+    }
+  },
+  {
+    "store" : "recipes_store",
+    "name" : "imageCount",
+    "class" : "org.apache.solr.ltr.feature.SolrFeature",
+    "params" : {
+      "q" : "{!func}scale(ImagesCount, 0, 1)"
     }
   },
   {

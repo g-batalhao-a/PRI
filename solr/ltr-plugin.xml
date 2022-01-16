@@ -12,3 +12,57 @@
 <str name="fvCacheName">QUERY_DOC_FV</str>
 </transformer>
 <transformer name="interleaving" class="org.apache.solr.ltr.response.transform.LTRInterleavingTransformerFactory"/>
+
+<updateRequestProcessorChain name="processor-chain" default="true"
+    processor="uuid,remove-blank,field-name-mutating,parse-boolean,parse-long,parse-double,parse-date,add-schema-fields">
+
+    <processor class="solr.CloneFieldUpdateProcessorFactory">
+        <str name="source">Keywords</str>
+        <str name="dest">KeywordsCount</str>
+    </processor>
+    <processor class="solr.CloneFieldUpdateProcessorFactory">
+        <str name="source">Ingredients</str>
+        <str name="dest">IngredientsCount</str>
+    </processor>
+    <processor class="solr.CloneFieldUpdateProcessorFactory">
+        <str name="source">Instructions</str>
+        <str name="dest">InstructionsCount</str>
+    </processor>
+    <processor class="solr.CloneFieldUpdateProcessorFactory">
+        <str name="source">Images</str>
+        <str name="dest">ImagesCount</str>
+    </processor>
+
+    <processor class="solr.CountFieldValuesUpdateProcessorFactory">
+        <str name="fieldName">KeywordsCount</str>
+    </processor>
+    <processor class="solr.CountFieldValuesUpdateProcessorFactory">
+        <str name="fieldName">IngredientsCount</str>
+    </processor>
+    <processor class="solr.CountFieldValuesUpdateProcessorFactory">
+        <str name="fieldName">InstructionsCount</str>
+    </processor>
+    <processor class="solr.CountFieldValuesUpdateProcessorFactory">
+        <str name="fieldName">ImagesCount</str>
+    </processor>
+
+    <processor class="solr.DefaultValueUpdateProcessorFactory">
+        <str name="fieldName">KeywordsCount</str>
+        <int name="value">0</int>
+    </processor>
+    <processor class="solr.DefaultValueUpdateProcessorFactory">
+        <str name="fieldName">IngredientsCount</str>
+        <int name="value">0</int>
+    </processor>
+    <processor class="solr.DefaultValueUpdateProcessorFactory">
+        <str name="fieldName">InstructionsCount</str>
+        <int name="value">0</int>
+    </processor>
+    <processor class="solr.DefaultValueUpdateProcessorFactory">
+        <str name="fieldName">ImagesCount</str>
+        <int name="value">0</int>
+    </processor>
+
+    <processor class="solr.LogUpdateProcessorFactory" />
+    <processor class="solr.RunUpdateProcessorFactory" />
+</updateRequestProcessorChain>

@@ -64,6 +64,11 @@
             "multiValued": true
         },
         {
+            "name": "ImagesCount",
+            "type": "integer",
+            "stored": true
+        },
+        {
             "name": "Category",
             "type": "title"
         },
@@ -78,9 +83,19 @@
             "multiValued": true
         },
         {
+            "name": "KeywordsCount",
+            "type": "integer",
+            "stored": true
+        },
+        {
             "name": "Ingredients",
             "type": "text_en",
             "multiValued": true
+        },
+        {
+            "name": "IngredientsCount",
+            "type": "integer",
+            "stored": true
         },
         {
             "name": "Ingredients_Facet",
@@ -112,6 +127,11 @@
             "name": "Instructions",
             "type": "text_en",
             "multiValued": true
+        },
+        {
+            "name": "InstructionsCount",
+            "type": "integer",
+            "stored": true
         },
         {
             "name": "URL",

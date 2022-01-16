@@ -3,11 +3,41 @@
     "class" : "org.apache.solr.ltr.model.LinearModel",
     "name" : "myModel",
     "features" : [
+      { "name" : "queryMatchName" },
+      { "name" : "queryMatchDescription" },
+      { "name" : "queryMatchCategory" },
+      { "name" : "queryMatchIngredients" },
+      { "name" : "queryMatchKeywords" },
+      { "name" : "queryMatchInstructions" },
+      { "name" : "queryMatchReviews" },
+      { "name" : "queryMatchAuthorName" },
+      { "name" : "recency" },
+      { "name" : "rating" },
+      { "name" : "reviewCount" },
+      { "name" : "keywordCount" },
+      { "name" : "ingredientCount" },
+      { "name" : "instructionCount" },
+      { "name" : "imageCount" },
       { "name" : "originalScore" }
     ],
     "params" : {
       "weights" : {
-        "originalScore": 0.5
+        "queryMatchName" : 0,
+        "queryMatchDescription" : 0,
+        "queryMatchCategory" : 0,
+        "queryMatchIngredients" : 0,
+        "queryMatchKeywords" : 0,
+        "queryMatchInstructions" : 0,
+        "queryMatchReviews" : 0,
+        "queryMatchAuthorName" : 0,
+        "recency" : 0,
+        "rating" : 0,
+        "reviewCount" : 0,
+        "keywordCount" : 0,
+        "ingredientCount" : 0,
+        "instructionCount" : 0,
+        "imageCount" : 0,
+        "originalScore": 1
       }
     }
 }
