@@ -1,0 +1,75 @@
+{
+  "store": "recipes_store",
+  "class": "org.apache.solr.ltr.model.LinearModel",
+  "name": "myModel",
+  "features": [
+    {
+      "name": "queryMatchName"
+    },
+    {
+      "name": "queryMatchDescription"
+    },
+    {
+      "name": "queryMatchCategory"
+    },
+    {
+      "name": "queryMatchIngredients"
+    },
+    {
+      "name": "queryMatchKeywords"
+    },
+    {
+      "name": "queryMatchInstructions"
+    },
+    {
+      "name": "queryMatchReviews"
+    },
+    {
+      "name": "queryMatchAuthorName"
+    },
+    {
+      "name": "recency"
+    },
+    {
+      "name": "rating"
+    },
+    {
+      "name": "reviewCount"
+    },
+    {
+      "name": "keywordCount"
+    },
+    {
+      "name": "ingredientCount"
+    },
+    {
+      "name": "instructionCount"
+    },
+    {
+      "name": "imageCount"
+    },
+    {
+      "name": "originalScore"
+    }
+  ],
+  "params": {
+    "weights": {
+      "queryMatchName": "-0.61264533",
+      "queryMatchDescription": "-0.016012382",
+      "queryMatchCategory": "0.40750793",
+      "queryMatchIngredients": "0.10536964",
+      "queryMatchKeywords": "0.23444816",
+      "queryMatchInstructions": "-0.030611534",
+      "queryMatchReviews": "0.29199001",
+      "queryMatchAuthorName": "-0.88715649",
+      "recency": "-0.43097624",
+      "rating": "0.84916848",
+      "reviewCount": "1.3468372",
+      "keywordCount": "1.6347141",
+      "ingredientCount": "1.6268826",
+      "instructionCount": "0.045574259",
+      "imageCount": "-5.1624022",
+      "originalScore": "0.29625478"
+    }
+  }
+}

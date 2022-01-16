@@ -136,7 +136,7 @@ app.get("/search", async (req, res) => {
   if (sort && sort !== "Relevance")
     params["sort"] = sort
   else
-    params["rq"] = '{!ltr model=myModel reRankDocs=500}'
+    params["rq"] = `{!ltr model=myModel reRankDocs=100 efi.text="${search}"}`
 
 
   // Request

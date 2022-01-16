@@ -20,24 +20,24 @@
       { "name" : "imageCount" },
       { "name" : "originalScore" }
     ],
-    "params" : {
-      "weights" : {
-        "queryMatchName" : 0,
-        "queryMatchDescription" : 0,
-        "queryMatchCategory" : 0,
-        "queryMatchIngredients" : 0,
-        "queryMatchKeywords" : 0,
-        "queryMatchInstructions" : 0,
-        "queryMatchReviews" : 0,
-        "queryMatchAuthorName" : 0,
-        "recency" : 0,
-        "rating" : 0,
-        "reviewCount" : 0,
-        "keywordCount" : 0,
-        "ingredientCount" : 0,
-        "instructionCount" : 0,
-        "imageCount" : 0,
-        "originalScore": 1
-      }
+    "params": {
+    "weights": {
+      "queryMatchName": -0.61264533,
+      "queryMatchDescription": -0.016012382,
+      "queryMatchCategory": 0.40750793,
+      "queryMatchIngredients": 0.10536964,
+      "queryMatchKeywords": 0.23444816,
+      "queryMatchInstructions": -0.030611534,
+      "queryMatchReviews": 0.29199001,
+      "queryMatchAuthorName": -0.88715649,
+      "recency": -0.43097624,
+      "rating": 0.84916848,
+      "reviewCount": 1.3468372,
+      "keywordCount": 1.6347141,
+      "ingredientCount": 1.6268826,
+      "instructionCount": 0.045574259,
+      "imageCount": -5.1624022,
+      "originalScore": 0.29625478
     }
+  }
 }
