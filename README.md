@@ -1,14 +1,29 @@
 # PRI
 
-## TODO
+## Solr
 
-- [x] Criar script para correr com ou sem test dataset
-- [ ] Criar copy fields para queries em vários fields (link: https://solr.apache.org/guide/8_10/copying-fields.html)
-- [x] Completar fields das reviews/user
-- [ ] Rever os field-types do texto, para já estamos a usar:
-  - uiString - unindexed string para o que não queremos que seja pesquisável (URL e Images)
-  - string - para o que queremos pesquisar mas não analisar (Type)
-  - title - para o que queremos analisar e que seja possível fazer partial matching, ou seja [Query: Str]->[Strawberries, Struddel] em vez de ser preciso escrever a palavra completa (Name, RecipeCategory)
-  - text_en - default do Solr para texto em inglês, sem partial match (Description, RecipeInstructions)
-  Preciso ver se são os mais adequados para cada cena e experimentar mais queries
-- Chorar
+To run solr, please run the following command from the `/sources` folder:
+
+```
+./run.sh -b
+```
+
+NOTE: For testing, please run the command with the extra `-t` flag. This will load Solr with a smaller dataset, present in this zip.
+
+## User Interface
+
+After Solr is running, please follow the next instructions:
+
+Firstly, from the `/sources/milestone_3` folder, run the following command to start the backend:
+
+```
+npm install & npm start
+```
+
+After backend is running, run the following command from the `/sources/milestone_3/client` folder:
+
+```
+npm install & npm start
+```
+
+If Solr, Backend and Frontend are running, you can then join `https://localhost:3000` to interact with the user interface of our search system.
